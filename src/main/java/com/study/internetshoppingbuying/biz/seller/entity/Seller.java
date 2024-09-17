@@ -24,7 +24,8 @@ public class Seller extends BaseEntity {
     @Column(length = 200, nullable = false)
     private String sellerName;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "seller"
+            , cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Item> itemList = new ArrayList<>();
 
 
@@ -32,5 +33,13 @@ public class Seller extends BaseEntity {
     protected Seller(Long id, String sellerName) {
         this.id = id;
         this.sellerName = sellerName;
+    }
+
+    @Builder
+    protected Seller(Long id, String sellerName, List<Item> itemList) {
+        this.id = id;
+        this.sellerName = sellerName;
+        this.itemList = itemList;
+
     }
 }

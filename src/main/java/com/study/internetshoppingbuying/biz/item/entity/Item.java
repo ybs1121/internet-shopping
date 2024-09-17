@@ -4,6 +4,7 @@ import com.study.internetshoppingbuying.biz.seller.entity.Seller;
 import com.study.internetshoppingbuying.core.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,4 +28,10 @@ public class Item extends BaseEntity {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
+    @Builder
+    public Item(String name, Long price, Seller seller) {
+        this.name = name;
+        this.price = price;
+        this.seller = seller;
+    }
 }

@@ -1,16 +1,22 @@
 package com.study.internetshoppingbuying.biz.user.service;
 
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.study.internetshoppingbuying.biz.user.dto.UserDto;
+import com.study.internetshoppingbuying.biz.user.entity.QUser;
 import com.study.internetshoppingbuying.biz.user.entity.User;
 import com.study.internetshoppingbuying.biz.user.entity.mapper.UserMapper;
 import com.study.internetshoppingbuying.biz.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.expression.spel.ast.Projection;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.study.internetshoppingbuying.biz.user.entity.QUser.*;
 
 @RequiredArgsConstructor
 @Service
@@ -19,6 +25,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final JPAQueryFactory queryFactory;
 
     @Override
     public String saveUser(UserDto userDto) {
@@ -37,6 +44,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getUsers() {
         //fixme 추후 QueryDsl 로 변경예정
-        return userRepository.findAll().stream().map( u -> UserMapper.toDto(u)).collect(Collectors.toList());
+//        return userRepository.findAll().stream().map( u -> UserMapper.toDto(u)).collect(Collectors.toList());
+
+        return queryFactory.select(
+                        Projections.bean(
+                                UserDto.class, user.userId, user.address, user.name
+                        ))
+                .from(user)
+                .fetch();
     }
 }
