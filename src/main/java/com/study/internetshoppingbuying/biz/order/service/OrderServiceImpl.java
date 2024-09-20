@@ -2,7 +2,6 @@ package com.study.internetshoppingbuying.biz.order.service;
 
 import com.study.internetshoppingbuying.biz.item.entity.Item;
 import com.study.internetshoppingbuying.biz.item.repository.ItemRepository;
-import com.study.internetshoppingbuying.biz.item.service.ItemService;
 import com.study.internetshoppingbuying.biz.order.dto.OrderDto;
 import com.study.internetshoppingbuying.biz.order.entity.Order;
 import com.study.internetshoppingbuying.biz.order.entity.OrderHistory;
@@ -11,16 +10,18 @@ import com.study.internetshoppingbuying.biz.order.repository.OrderHistoryReposit
 import com.study.internetshoppingbuying.biz.order.repository.OrderRepository;
 import com.study.internetshoppingbuying.biz.user.entity.User;
 import com.study.internetshoppingbuying.biz.user.repository.UserRepository;
-import com.study.internetshoppingbuying.biz.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
@@ -52,15 +53,18 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         // OrderHistory - 상세  생성
+        ArrayList<OrderHistory> orderHistoryList = new ArrayList<>();
         for (Item item : itemList) {
             OrderHistory orderHistory = OrderHistory.builder()
                     .order(order)
                     .item(item)
                     .build();
+            orderHistoryList.add(orderHistory);
 
-            orderHistoryRepository.save(orderHistory);
-
+//            orderHistoryRepository.save(orderHistory);
         }
+        orderHistoryRepository.saveAll(orderHistoryList);
+        log.info("주문 완료");
         return order.getId();
     }
 }

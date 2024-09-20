@@ -5,6 +5,9 @@ spring:
     platform: postgres
     username: tester
     password: tester
+    hikari:
+      data-source-properties:
+        rewriteBatchedInserts: true
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -13,6 +16,13 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
     generate-ddl: true
+    properties:
+      hibernate.jdbc.batch_size: 1000
+      hibernate.format_sql: true
+      hibernate.order_updates: true
+      hibernate.order_inserts: true
+      hibernate.hibernate.jdbc.batch_versioned_data: true
+
   redis:
     host: localhost
     port: 6379
@@ -20,3 +30,4 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+    org.springframework: debug

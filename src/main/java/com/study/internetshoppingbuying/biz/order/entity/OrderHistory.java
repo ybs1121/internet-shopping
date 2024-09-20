@@ -9,9 +9,16 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor
+@SequenceGenerator(
+        name = "order_history_gen"
+        , allocationSize = 50
+        , initialValue = 1
+        , sequenceName = "order_history_seq"
+)
 public class OrderHistory {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "order_history_id")
     private Long id;
 
