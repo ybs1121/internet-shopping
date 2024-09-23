@@ -3,9 +3,12 @@ package com.study.internetshoppingbuying.biz.order.service;
 import com.study.internetshoppingbuying.biz.item.entity.Item;
 import com.study.internetshoppingbuying.biz.item.repository.ItemRepository;
 import com.study.internetshoppingbuying.biz.order.dto.OrderDto;
+import com.study.internetshoppingbuying.biz.order.dto.OrderFind;
+import com.study.internetshoppingbuying.biz.order.dto.OrderResponseDto;
 import com.study.internetshoppingbuying.biz.order.entity.Order;
 import com.study.internetshoppingbuying.biz.order.entity.OrderHistory;
 import com.study.internetshoppingbuying.biz.order.mapper.OrderMapper;
+import com.study.internetshoppingbuying.biz.order.repository.CustomOrderRepository;
 import com.study.internetshoppingbuying.biz.order.repository.OrderHistoryRepository;
 import com.study.internetshoppingbuying.biz.order.repository.OrderRepository;
 import com.study.internetshoppingbuying.biz.user.entity.User;
@@ -28,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     private final OrderHistoryRepository orderHistoryRepository;
+    private final CustomOrderRepository customOrderRepository;
 
     public Long order(OrderDto orderDto) {
         // 주문 회원 조회
@@ -66,5 +70,15 @@ public class OrderServiceImpl implements OrderService {
         orderHistoryRepository.saveAll(orderHistoryList);
         log.info("주문 완료");
         return order.getId();
+    }
+
+    @Override
+    public OrderResponseDto getOrders(String userId, OrderFind orderFind) {
+        try {
+            return customOrderRepository.getOrders(userId, orderFind);
+        } catch (Exception e) {
+            log.error("getOrders error : {} {}", e.getClass().getName(), e.getMessage());
+            throw e;
+        }
     }
 }
