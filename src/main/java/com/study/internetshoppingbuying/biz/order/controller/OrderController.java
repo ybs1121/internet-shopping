@@ -2,6 +2,7 @@ package com.study.internetshoppingbuying.biz.order.controller;
 
 import com.study.internetshoppingbuying.biz.order.dto.OrderDto;
 import com.study.internetshoppingbuying.biz.order.dto.OrderFind;
+import com.study.internetshoppingbuying.biz.order.dto.OrderResponseDto;
 import com.study.internetshoppingbuying.biz.order.service.OrderService;
 import com.study.internetshoppingbuying.core.dto.CommonResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class OrderController {
     }
 
     @GetMapping("/{userId}")
-    public CommonResponseDto<Object> getOrder(@PathVariable final String userId, OrderFind orderFind) {
+    public CommonResponseDto<OrderResponseDto> getOrder(@PathVariable final String userId, OrderFind orderFind) {
         return CommonResponseDto.OK(orderService.getOrders(userId, orderFind));
     }
 }
