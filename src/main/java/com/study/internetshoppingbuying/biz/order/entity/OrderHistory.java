@@ -1,10 +1,13 @@
 package com.study.internetshoppingbuying.biz.order.entity;
 
+import com.study.internetshoppingbuying.biz.coupon.entity.Coupon;
 import com.study.internetshoppingbuying.biz.item.entity.Item;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Entity
 @Getter
@@ -28,10 +31,23 @@ public class OrderHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     private Item item;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Coupon coupon;
+
+    @Column(precision = 13)
+    private Long payAmount;
+
+    @Column(precision = 13)
+    private Long discountAmount;
+
 
     @Builder
-    public OrderHistory(Order order, Item item) {
+
+    public OrderHistory(Long id, Order order, Item item, Coupon coupon, Long payAmount, Long discountAmount) {
         this.order = order;
         this.item = item;
+        this.coupon = coupon;
+        this.payAmount = payAmount;
+        this.discountAmount = discountAmount;
     }
 }

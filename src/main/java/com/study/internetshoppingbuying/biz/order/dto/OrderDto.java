@@ -10,5 +10,5 @@ import java.util.List;
 public class OrderDto {
 
     private String userId;
-    private List<Long> itemIdList;
+    private List<OrderItemDto> orderItemList;
 }

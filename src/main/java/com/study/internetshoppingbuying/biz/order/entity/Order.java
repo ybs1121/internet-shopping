@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,8 +22,13 @@ public class Order extends BaseEntity {
     @ManyToOne
     private User user;
 
-    @Builder
+    @Column(precision = 13)
+    private Long totalPayAmount;
 
+    @Column(precision = 13)
+    private Long totalDiscountAmount;
+
+    @Builder
     public Order(User user) {
         this.user = user;
     }
